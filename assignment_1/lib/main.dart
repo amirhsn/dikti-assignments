@@ -1,3 +1,4 @@
+import 'package:assignment_1/pages/homePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Assignment 1',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Poppins'
       ),
-      home: ,
+      home: HomePage(),
     );
   }
 }
