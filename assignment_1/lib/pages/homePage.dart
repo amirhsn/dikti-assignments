@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:assignment_1/components/cards.dart';
 import 'package:assignment_1/components/menuBar.dart';
 import 'package:assignment_1/constant.dart';
@@ -5,6 +7,7 @@ import 'package:assignment_1/pages/detailPage.dart';
 import 'package:assignment_1/pages/subPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ key }) : super(key: key);
@@ -21,6 +24,25 @@ enum BottomMenu{
 
 class _HomePageState extends State<HomePage> {
   BottomMenu bottomMenu = BottomMenu.NewTaste;
+  List<dynamic> headerFood, newFood, popularFood, recFood;
+
+  @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      loadJson();
+    }
+
+  //LOAD JSON
+  void loadJson() async{
+    String data = await rootBundle.loadString('assets/foodData.json');
+    var hasilJson = jsonDecode(data);
+    headerFood = hasilJson['data']['header'];
+    newFood = hasilJson['data']['new_taste'];
+    popularFood = hasilJson['data']['popular'];
+    recFood = hasilJson['data']['recommended'];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,30 +70,26 @@ class _HomePageState extends State<HomePage> {
             Container(
               width: double.infinity,
               height: screenHeight(context)*(1/5),
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  Cards(
+                itemCount: headerFood == null ? 0 : headerFood.length,
+                itemBuilder: (context, index){
+                  return Cards(
+                    nama: headerFood[index]['nama'],
+                    harga: headerFood[index]['harga'],
+                    gambar: headerFood[index]['image'],
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailedPage(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailedPage(
+                        nama: headerFood[index]['nama'],
+                        bahan: headerFood[index]['bahan'],
+                        deskripsi: headerFood[index]['deskripsi'],
+                        harga: headerFood[index]['harga'],
+                        gambar: headerFood[index]['image'],
+                        rating: headerFood[index]['rating'].toDouble(),
+                      )));
                     },
-                  ),
-                  Cards(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailedPage(),));
-                    },
-                  ),
-                  Cards(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailedPage(),));
-                    },
-                  ),
-                  Cards(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailedPage(),));
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
             ),
             SizedBox(
@@ -122,16 +140,16 @@ class _HomePageState extends State<HomePage> {
   dynamic getSubPage(BottomMenu page){
     switch (page) {
       case BottomMenu.NewTaste:
-        return SubPage(warna: Colors.white);
+        return SubPage(data: newFood);
         break;
       case BottomMenu.Popular:
-        return SubPage(warna: Colors.white);
+        return SubPage(data: popularFood);
         break;
       case BottomMenu.Recommended:
-        return SubPage(warna: Colors.white);
+        return SubPage(data: recFood);
         break;
       default:
-        return SubPage(warna: Colors.white);
+        return SubPage(data: newFood);
         break;
     }
   }

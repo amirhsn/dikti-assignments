@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetailedPage extends StatefulWidget {
-  const DetailedPage({ key }) : super(key: key);
+  final String nama, harga, deskripsi, bahan, gambar;
+  final double rating;
+  const DetailedPage({ key, @required this.nama, @required this.harga, @required this.deskripsi, @required this.bahan, @required this.gambar, @required this.rating }) : super(key: key);
 
   @override
   _DetailedPageState createState() => _DetailedPageState();
@@ -20,7 +22,14 @@ class _DetailedPageState extends State<DetailedPage> {
           Container(
             width: double.infinity,
             height: screenHeight(context)*(1/2),
-            color: Colors.brown,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  widget.gambar
+                ),
+                fit: BoxFit.cover
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -46,7 +55,7 @@ class _DetailedPageState extends State<DetailedPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Soto Ayam',
+                            widget.nama,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: screenHeight(context)*(1/35)
@@ -58,7 +67,7 @@ class _DetailedPageState extends State<DetailedPage> {
                           Row(
                             children: [
                               RatingBar.builder(
-                                initialRating: 3,
+                                initialRating: widget.rating.round().toDouble(),
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: false,
@@ -78,7 +87,7 @@ class _DetailedPageState extends State<DetailedPage> {
                                 width: screenWidth(context)*(1/60),
                               ),
                               Text(
-                                '3.6',
+                                widget.rating.toString(),
                                 style: TextStyle(
                                   fontSize: screenHeight(context)*(1/55),
                                   fontWeight: FontWeight.w600,
@@ -90,7 +99,7 @@ class _DetailedPageState extends State<DetailedPage> {
                         ],
                       ),
                       Container(
-                        width: screenWidth(context)*(1/3),
+                        width: screenWidth(context)*(1/4.5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -105,8 +114,8 @@ class _DetailedPageState extends State<DetailedPage> {
                                 });
                               },
                               child: Container(
-                                height: screenHeight(context)*(1/20),
-                                width: screenHeight(context)*(1/20),
+                                height: screenHeight(context)*(1/30),
+                                width: screenHeight(context)*(1/30),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
@@ -122,7 +131,7 @@ class _DetailedPageState extends State<DetailedPage> {
                             Text(
                               jumlah.toString(),
                               style: TextStyle(
-                                fontSize: screenHeight(context)*(1/30)
+                                fontSize: screenHeight(context)*(1/40)
                               ),
                             ),
                             GestureDetector(
@@ -136,8 +145,8 @@ class _DetailedPageState extends State<DetailedPage> {
                                 });
                               },
                               child: Container(
-                                height: screenHeight(context)*(1/20),
-                                width: screenHeight(context)*(1/20),
+                                height: screenHeight(context)*(1/30),
+                                width: screenHeight(context)*(1/30),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
@@ -163,7 +172,7 @@ class _DetailedPageState extends State<DetailedPage> {
                     ),
                   ),
                   Text(
-                    'lorem ipsum dolor amet repud fret yurfge lorem ipsum dolor amet repud fret yurfge ',
+                    widget.deskripsi == null ? '' : widget.deskripsi,
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: screenHeight(context)*(1/50)
@@ -177,7 +186,7 @@ class _DetailedPageState extends State<DetailedPage> {
                     ),
                   ),
                   Text(
-                    'lorem ipsum dolor amet repud fret yurfge lorem ipsum dolor amet repud fret yurfge ',
+                    widget.bahan == null ? '' : widget.bahan,
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: screenHeight(context)*(1/50)
@@ -197,7 +206,7 @@ class _DetailedPageState extends State<DetailedPage> {
                             ),
                           ),
                           Text(
-                            'Rp 27.000',
+                            widget.harga,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: screenHeight(context)*(1/35)

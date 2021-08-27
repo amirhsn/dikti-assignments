@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class Cards extends StatelessWidget {
   final Function onPressed;
-  const Cards({ key, @required this.onPressed }) : super(key: key);
+  final String nama, harga, gambar;
+  const Cards({ key, @required this.onPressed, @required this.nama, @required this.harga, @required this.gambar }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,10 @@ class Cards extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
                   ),
-                  color: Colors.brown,
+                  image: DecorationImage(
+                    image: NetworkImage(this.gambar),
+                    fit: BoxFit.fill,
+                  )
                 ),
               ),
             ),
@@ -51,19 +55,20 @@ class Cards extends StatelessWidget {
                   ),
                   color: Colors.white
                 ),
+                width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ice Cream Sandwich',
+                      this.nama,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: screenHeight(context)*(1/45)
                       ),
                     ),
                     Text(
-                      'Rp20.000',
+                      this.harga,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: screenHeight(context)*(1/50),
